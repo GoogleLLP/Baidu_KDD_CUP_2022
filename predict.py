@@ -30,9 +30,9 @@ def forecast(_settings: dict) -> np.ndarray:
     turb_ids = data[turbine_id].unique().tolist()
     for i, turb_id in enumerate(turb_ids):
         model: MultiOutputRegressor = load(os.path.join(_settings["checkpoints"], "model_%d.pkl" % turb_id))
-        data_test, _ = get_turb_test_list(data, turb_id, _settings)
+        data_test, scaler = get_turb_test_list(data, turb_id, _settings)
         result = model.predict(data_test)
-        # result = scaler.inverse_transform(result, only_target=True)
+        result = scaler.inverse_transform(result, only_target=True)
         results[i, :, 0] = result.ravel()
     return np.array(results)
 
