@@ -173,8 +173,8 @@ def get_turb_list(data: DataFrame, turb_id: int, _settings: dict) -> ((ndarray, 
     val_size = _settings["val_size"]
     data = data[data[turbine_id] == turb_id]
     scl = Scaler(_settings)
-    scl.fit(data.iloc[:, start_col:])
-    data.iloc[:, start_col:] = scl.transform(data.iloc[:, start_col:])
+    # scl.fit(data.iloc[:, start_col:])
+    # data.iloc[:, start_col:] = scl.transform(data.iloc[:, start_col:])
     xy_train = data[data["Day"] <= train_size].fillna(0).iloc[:, start_col:].values
     xy_val = data[data["Day"] > train_size].fillna(0).iloc[:, start_col:].values
     x_train = slice_window(xy_train[:-output_len, 0:in_var], sequence_length=input_len, batch_size=batch_size)
@@ -234,8 +234,8 @@ def get_turb_test_list(data: DataFrame, turb_id: int, _settings: dict) -> (tf.ra
     batch_size = _settings["batch_size"]
     data = data[data[turbine_id] == turb_id]
     scl = Scaler(_settings)
-    scl.fit(data.iloc[:, start_col:])
-    data.iloc[:, start_col:] = scl.transform(data.iloc[:, start_col:])
+    # scl.fit(data.iloc[:, start_col:])
+    # data.iloc[:, start_col:] = scl.transform(data.iloc[:, start_col:])
     xy_test = data.fillna(0).iloc[-input_len:, start_col:].values
     x_test = slice_window(xy_test[:, 0:in_var], sequence_length=input_len, batch_size=batch_size)
     return x_test, scl

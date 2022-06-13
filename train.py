@@ -21,7 +21,7 @@ def train_and_val(_settings: dict) -> None:
     for turb_id in turb_ids:
         print(">>>>>>>>>>>>> turb %d training begin >>>>>>>>>>>>>>>>>" % turb_id)
         (x_train, y_train), (_, _) = get_turb_list(data, turb_id, _settings)
-        model = MultiOutputRegressor(GradientBoostingRegressor(loss="huber", learning_rate=0.1, n_estimators=10, verbose=1), n_jobs=-1)
+        model = MultiOutputRegressor(GradientBoostingRegressor(loss="huber", learning_rate=0.1, n_estimators=1000, verbose=1), n_jobs=-1)
         print(x_train.shape, y_train.shape)
         model.fit(x_train, y_train)
         dump(model, os.path.join(_settings["checkpoints"], "model_%d.pkl" % turb_id))
