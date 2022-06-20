@@ -25,14 +25,14 @@ def forecast(_settings: dict) -> np.ndarray:
     output_len = _settings["output_len"]
     results = np.zeros(shape=(capacity, output_len, 1), dtype=float)
     turbine_id = _settings["turbine_id"]
-    filepath = os.path.join(_settings["data_path"], _settings["filename"])
+    filepath = _settings["path_to_test_x"]
     data = pd.read_csv(filepath)
     turb_ids = data[turbine_id].unique().tolist()
     for i, turb_id in enumerate(turb_ids):
         model: MultiOutputRegressor = load(os.path.join(_settings["checkpoints"], "model_%d.pkl" % turb_id))
         data_test, scaler = get_turb_test_list(data, turb_id, _settings)
         result = model.predict(data_test)
-        # result = scaler.inverse_transform(result, only_target=True)
+        result = scaler.inverse_transform(result, only_target=True)
         results[i, :, 0] = result.ravel()
     return np.array(results)
 
@@ -40,4 +40,4 @@ def forecast(_settings: dict) -> np.ndarray:
 if __name__ == '__main__':
     settings = prep_env()
 
-    print(forecast(settings))
+    print(forecast(settings).shape)
