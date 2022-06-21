@@ -2,17 +2,11 @@
 import os
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from joblib import load
 from common import get_turb_test_list
 from prepare import prep_env
-
-
-physical_devices = tf.config.list_physical_devices('GPU')
-for physical_device in physical_devices:
-    tf.config.experimental.set_memory_growth(physical_device, enable=True)
 
 
 def forecast(_settings: dict) -> np.ndarray:
